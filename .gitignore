@@ -1,0 +1,13 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+
+git rm -r ¨Ccached .
+git add .
+git commit -m ¡°update .gitignore¡±
+gen

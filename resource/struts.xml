@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+
+    <package name="struts" extends="struts-default">
+
+
+        <interceptors>
+            <interceptor name="loginInterceptor" class="com.itlike.web.LoginInterceptor"></interceptor>
+        </interceptors>
+
+        <global-results>
+            <result name="login">/mgr_login.jsp</result>
+        </global-results>
+        <action name="location_*" class="locationAction" method="{1}">
+            <result name="left">/WEB-INF/mgr/mgr_left.jsp</result>
+            <result name="top">/WEB-INF/mgr/mgr_top.jsp</result>
+            <result name="account">/WEB-INF/mgr/mgr_account.jsp</result>
+            <result name="add">/WEB-INF/mgr/mgr_add_article.jsp</result>
+
+            <interceptor-ref name="loginInterceptor"/>
+            <interceptor-ref name="defaultStack"/>
+            <allowed-methods>left,top,account,add</allowed-methods>
+        </action>
+
+        <!--登录-->
+        <action name="loginAction_*" class="loginAction" method="{1}" >
+            <result name="success" >/WEB-INF/mgr/mgr_index.jsp</result>
+            <result name="loginout" type="redirect">/mgr_login.jsp</result>
+            <result name="list">/WEB-INF/mgr/mgr_account.jsp</result>
+            <result name="listAction" type="redirectAction">loginAction_userList.action</result>
+            <interceptor-ref name="loginInterceptor">
+                <param name="excludeMethods">login</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+            <allowed-methods>login,loginout,add,userList,delete</allowed-methods>
+        </action>
+        <!--分类-->
+        <action name="category_*" class="categoryAction" method="{1}">
+            <result name="list">/WEB-INF/mgr/mgr_category.jsp</result>
+            <result name="listAction" type="redirectAction">category_list.action</result>
+            <interceptor-ref name="loginInterceptor"/>
+            <interceptor-ref name="defaultStack"/>
+            <allowed-methods>add,list,updateUI,update,delete</allowed-methods>
+        </action>
+        <!--文章-->
+        <action name="article_*" class="articleAction" method="{1}">
+            <result name="list">/WEB-INF/mgr/mgr_main.jsp</result>
+            <result name="listres" type="redirect">article_pageList.action</result>
+            <result name="edit">/WEB-INF/mgr/mgr_edit_article.jsp</result>
+            <interceptor-ref name="loginInterceptor">
+                <param name="excludeMethods">getCategory</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+            <allowed-methods>list,pageList,delete,getCategory,add,edit,update</allowed-methods>
+        </action>
+        <!--webAction-->
+        <action name="web_*" class="webAction" method="{1}">
+            <allowed-methods>getPageList,getDetail</allowed-methods>
+        </action>
+    </package>
+</struts>
